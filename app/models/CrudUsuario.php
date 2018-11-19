@@ -52,7 +52,7 @@ class CrudUsuarios
         $sql      = "SELECT * FROM usuario WHERE id_user = $id_user";
         $resultado = $this->conexao->query($sql);
         $usuario  = $resultado->fetch(PDO::FETCH_ASSOC);
-        $objeto = new Usuario($usuario['nome'], $usuario['email'], $usuario['login'],$usuario['senha'], $usuario['id_tipo_user'], $usuario['id_user']);
+        $objeto = new Usuario($usuario['nome'], $usuario['email'], $usuario['login'],$usuario['senha'], $usuario['id_tip_user'], $usuario['id_user']);
         return $objeto;
     }
 

@@ -15,6 +15,8 @@ include "../viewa/head.php";
 
 if (isset($_GET['acao'])){
 $acao = $_GET['acao'];
+} elseif (!isset($_SESSION['login'])){
+    $acao = 'login';
 }else{
     $acao = 'index';
 }
@@ -40,6 +42,11 @@ switch ($acao) {
             @session_start();
             $_SESSION['id'] = $_GET['iduser'];
         }
+
+
+        $perguntas = new Crudpergunta();
+        $array = $perguntas->getPerguntas();
+
         include "../viewa/index.php";
 
         break;
@@ -58,9 +65,27 @@ switch ($acao) {
 
         break;
 
-    case 'pergunta':
+    case 'resposta':
 
-        include "../viewa/perg.php";
+        $perguntas = new Crudpergunta();
+        $array = $perguntas->perguntaRespondidas();
+
+
+        include "../viewa/index.php";
+
+
+        break;
+
+    case 'pergunta':
+        $perguntas = new Crudpergunta();
+        $pergunta  = $perguntas->getPergunta($_GET['id']);
+
+        if (($_SESSION['id_tip_user'] < 3)){
+            include "../viewa/perg.php";
+        } else {
+            include "../viewa/resp.php";
+        }
+
         break;
 
     case 'categoria':

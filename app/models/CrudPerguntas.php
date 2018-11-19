@@ -1,6 +1,7 @@
 <?php 
 
 require_once "Pergunta.php";
+require_once "CrudUsuario.php";
 require_once "Conexao.php";
 
 /**
@@ -50,13 +51,17 @@ class Crudpergunta
         $resultado = $this->conexao->query($sql);
         $pergunta = $resultado->fetch(PDO::FETCH_ASSOC);
 
+        $user = new CrudUsuarios();
+        $pergunta['user'] = $user->getUsuario($pergunta['id_user']);
+
+
         return $pergunta;
     }
 
     public function updatePergunta(pergunta $pergunta)
     {
 
-        $consulta = "UPDATE pergunta SET hora = '{$pergunta->getHora()}', data = '{$pergunta->getData()}', detalhamento_per = '{$pergunta->getDescricaoPergunta()}', pergunta = '{$pergunta->getpergunta()}' , id_pergunta = '{$pergunta->getIdpergunta()}', id_pergunta = '{$pergunta->getIdPerg()}'
+        $consulta = "UPDATE pergunta SET hora = '{$pergunta->getHora()}', data = '{$pergunta->getData()}', detalhamento_per = '{$pergunta->getDescricaoPergunta()}', pergunta = '{$pergunta->getpergunta()}' , id_pergunta = '{$pergunta->getIdpergunta()}', id_pergunta = '{$pergunta->getIdPerg()}', status = 0
  					WHERE id_pergunta={$pergunta->getIdPergunta()}";
 
 
@@ -100,6 +105,26 @@ class Crudpergunta
         $listapergunta = [];
 
         $listapergunta = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new CrudUsuarios();
+        foreach ($listapergunta as $key => $lp){
+            $listapergunta[$key]['user'] = $user->getUsuario($lp['id_user']);
+        }
+        return $listapergunta;
+    }
+
+    public function getPerguntas()
+    {
+        $sql = "SELECT * FROM pergunta";
+        $resultado = $this->conexao->query($sql);
+        $listapergunta = [];
+
+        $listapergunta = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new CrudUsuarios();
+        foreach ($listapergunta as $key => $lp){
+            $listapergunta[$key]['user'] = $user->getUsuario($lp['id_user']);
+        }
         return $listapergunta;
     }
 

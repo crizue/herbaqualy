@@ -66,7 +66,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <?php if (isset($_SESSION['id_tip_user'])): ?>
+                    <?php if ($_SESSION['id_tip_user'] < 3): ?>
                         <a class="nav-link" href="index.php?acao=perguntar">Criar pergunta</a>
                     <?php else: ?>
                         <a class="nav-link" href="index.php?acao=resposta">Responder pergunta</a>
