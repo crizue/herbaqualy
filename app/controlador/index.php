@@ -21,7 +21,7 @@ $acao = $_GET['acao'];
     $acao = 'index';
 }
 
-$pgSmenu = ['login', 'cadastrar', 'esqueceuSenha', 'logout'];
+$pgSmenu = ['login', 'cadastrar', 'esqueceuSenha', 'logout', 'perguntar', 'resposta'];
 
 $verifica = true;
 foreach ($pgSmenu as $pg){
@@ -53,25 +53,112 @@ switch ($acao) {
 
     case 'perguntar':
         if (isset($_POST['gravar'])){
-            $pergunta = new Pergunta(date("Y-m-d H:i:s"), $_POST['descricao'], $_POST['pergunta']);
+
+            $target_dir = "../../assets/img/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+            // Check if image file is a actual image or fake image
+            if (isset($_POST["submit"])) {
+                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+                if ($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                    $uploadOk = 1;
+                } else {
+                    echo "File is not an image.";
+                    $uploadOk = 0;
+                }
+            }
+
+            // Check file size
+            if ($_FILES["fileToUpload"]["size"] > 500000) {
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+
+            // Allow certain file formats
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif") {
+                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $uploadOk = 0;
+            }
+
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+
+                // if everything is ok, try to upload file
+            } else {
+                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                    $image = $target_file; // the image to crop
+                    $dest_image = $target_file; // make sure the directory is writeable
+
+                    $org_img = imagecreatefromjpeg($image);
+
+                    if (imagesy($org_img) <= imagesx($org_img)) {
+                        $size = imagesy($org_img);
+                    } else {
+                        $size = imagesx($org_img);
+                    }
+
+                    $img = imagecreatetruecolor($size, $size);
+                    $imsx = (imagesx($org_img) - $size) / 2;
+                    $imsy = (imagesy($org_img) - $size) / 2;
+
+                    imagecopy($img, $org_img, 0, 0, $imsx, $imsy, $size, $size);
+                    imagejpeg($img, $dest_image, 90);
+                    imagedestroy($img);
+
+                    if (file_exists($target_dir . 'pergunta-' . $_SESSION['id_user'] . '-' . date("H-i-s") . '.' . $imageFileType)) {
+                        unlink($target_dir . 'pergunta-' . $_SESSION['id_user'] . '-' . date("H-i-s") . '.' . $imageFileType);
+                        rename($target_file, $target_dir . 'pergunta-' . $_SESSION['id_user'] . '-' . date("H-i-s") . '.' . $imageFileType);
+                    } else {
+                        rename($target_file, $target_dir . 'pergunta-' . $_SESSION['id_user'] . '-' . date("H-i-s") . '.' . $imageFileType);
+                    }
+
+                    $caminho_img = $target_dir . 'pergunta-' . $_SESSION['id_user'] . '-' . date("H-i-s") . '.' . $imageFileType;
+
+                    echo $caminho_img;
+                }
+            }
+
+            $pergunta = new Pergunta(date("Y-m-d H:i:s"), $_POST['descricao'], $_POST['pergunta'], $caminho_img);
             $pergunta->setDataHora(date("Y-m-d H:i:s"));
             $crud = new Crudpergunta();
             $crud->insertPergunta($pergunta, $_SESSION['id_user']);
-            
-            include "../viewa/index.php";
+
+            header('Location: index.php?acao=index');
+
         }else {
+            include "../viewa/menu.php";
             include "../viewa/criaperg.php";
         }
 
         break;
 
     case 'resposta':
+        echo '<script>alert('. var_dump($_POST) .');</script>';
+        if (isset($_POST['gravar'])){
+            $crudresposta = new crudRespostas();
+            $resposta = new Resposta(date("Y-m-d H:i:s"), $_POST['text'], $_SESSION['id_user'], $_GET['id']);
+            $crudresposta->insertResposta($resposta);
 
-        $perguntas = new Crudpergunta();
-        $array = $perguntas->perguntaRespondidas();
 
 
-        include "../viewa/index.php";
+            header('Location: index.php?acao=index');
+
+        }else {
+            include "../viewa/menu.php";
+
+            $perguntas = new Crudpergunta();
+            $array = $perguntas->perguntanAORespondidas();
+
+
+            include "../viewa/index.php";
+        }
+
+
 
 
         break;
@@ -80,10 +167,27 @@ switch ($acao) {
         $perguntas = new Crudpergunta();
         $pergunta  = $perguntas->getPergunta($_GET['id']);
 
-        if (($_SESSION['id_tip_user'] < 3)){
+        if (($_SESSION['id_tip_user'] < 3) or $pergunta['status'] == 1){
+            if ($pergunta['status'] == 1){
+                $resposta = new crudRespostas();
+                $resposta = $resposta->getResposta($_GET['id']);
+            } else {
+                $resposta['texto_res'] = 'sem resposta';
+            }
             include "../viewa/perg.php";
         } else {
-            include "../viewa/resp.php";
+            if (isset($_POST['gravar'])){
+                $crudresposta = new crudRespostas();
+                $resposta = new Resposta(date("Y-m-d H:i:s"), $_POST['text'], $_SESSION['id_user'], $_GET['id']);
+                $crudresposta->insertResposta($resposta);
+
+
+
+                //header('Location: index.php?acao=index');
+
+            }else {
+                include "../viewa/resp.php";
+            }
         }
 
         break;

@@ -32,8 +32,9 @@ class Crudpergunta
         $detalhamento_per = $pergunta->getDescricaoPergunta();
         $perg = $pergunta->getperg();
         $id_pergunta = $pergunta->getIdPerg();
+        $foto = $pergunta->getFoto();
 
-        $consulta = "INSERT INTO pergunta (detalhamento_per, pergunta, id_pergunta, id_user) VALUES ('{$detalhamento_per}', '{$perg}', '{$id_pergunta}',  '{$id_user}')";
+        $consulta = "INSERT INTO pergunta (detalhamento_per, pergunta, id_pergunta, foto, id_user) VALUES ('{$detalhamento_per}', '{$perg}', '{$id_pergunta}', '{$foto}',  '{$id_user}')";
         //echo $consulta;
         try {
             $res = $this->conexao->exec($consulta);
@@ -101,6 +102,21 @@ class Crudpergunta
     public function perguntaRespondidas()
     {
         $sql = "SELECT * FROM pergunta where status = 1";
+        $resultado = $this->conexao->query($sql);
+        $listapergunta = [];
+
+        $listapergunta = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new CrudUsuarios();
+        foreach ($listapergunta as $key => $lp){
+            $listapergunta[$key]['user'] = $user->getUsuario($lp['id_user']);
+        }
+        return $listapergunta;
+    }
+
+    public function perguntaNaoRespondidas()
+    {
+        $sql = "SELECT * FROM pergunta where status = 0";
         $resultado = $this->conexao->query($sql);
         $listapergunta = [];
 

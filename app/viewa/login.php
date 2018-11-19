@@ -64,12 +64,12 @@
       <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Pronto para sair?</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Selecione o seu tipo de usuário:</h5>
                   <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                   </button>
               </div>
-              <div class="modal-body">Selecione "Logout" para sair de sua sessão atual</div>
+              <div class="modal-body">Você é um biólogo formado ou apenas um usuário interessado?</div>
               <div class="modal-footer">
                   <a class="btn btn-outline-info"    href="index.php?acao=cadastrar&tipo=biologo" >Biólogo</a>
                   <a class="btn btn-outline-success" href="index.php?acao=cadastrar&tipo=comum">Comum</a>

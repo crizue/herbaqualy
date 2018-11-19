@@ -10,7 +10,7 @@
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
         <div class="container">
             <div class="row">
-                <form role="form" id="contact-form" class="contact-form" method="post">
+                <form enctype="multipart/form-data" role="form" id="contact-form" class="contact-form" method="post">
                         </div>
                     </div>
         <div class="row">
@@ -30,23 +30,9 @@
                     </div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                            <!-- image-preview-filename input [CUT FROM HERE]-->
-                            <div class="input-group image-preview">
-                                <input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
-                                <span class="input-group-btn">
-                    <!-- image-preview-clear button -->
-                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                        <span class="glyphicon glyphicon-remove"></span> Clear
-                    </button>
-                                    <!-- image-preview-input -->
-                    <div class="btn btn-default image-preview-input">
-                        <span class="glyphicon glyphicon-folder-open"></span>
-                        <span class="image-preview-input-title">Imagem</span>
-                        <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> <!-- rename it -->
-                    </div>
-                </span>
-                            </div><!-- /input-group image-preview [TO HERE]-->
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Selecione a imagem</label>
+                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="fileToUpload">
                         </div>
                     </div>
                 </div>

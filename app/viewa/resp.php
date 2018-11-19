@@ -19,11 +19,11 @@
                 <div class="card my-4">
                     <h5 class="card-header">Resposta:</h5>
                     <div class="card-body">
-                        <form>
+                        <form role="form" id="contact-form" class="contact-form" method="post">
                             <div class="form-group">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea name="text" class="form-control" rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-success">Enviar</button>
+                            <button type="submit" name="gravar" class="btn main-btn pull-right">Responder Pergunta</button>
                         </form>
                     </div>
                 </div>

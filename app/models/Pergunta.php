@@ -5,16 +5,17 @@ class Pergunta
     private $detalhamento_per;
     private $pergunta;
     private $id_pergunta;
+    private $foto;
 
     private $id_user;
 
-    public function __construct($data_hora, $detalhamento_per, $pergunta, $id_pergunta=null)
+    public function __construct($data_hora, $detalhamento_per, $pergunta, $foto, $id_pergunta=null)
     {
         $this->data_hora = $data_hora;
         $this->detalhamento_per = $detalhamento_per;
         $this->pergunta = $pergunta;
         $this->id_pergunta = $id_pergunta;
-
+        $this->foto = $foto;
 
     }
     /**
@@ -101,5 +102,23 @@ class Pergunta
     {
         $this->id_pergunta = $id_pergunta;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * @param mixed $foto
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+    }
+
+
 }
 ?>

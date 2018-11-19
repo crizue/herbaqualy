@@ -5,21 +5,20 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <p class="lead">Pergunta por: User1337</p>
-                        <h1 class="display-3">Quais os beneficios da hortelã?</h1>
-                        <p class="lead">Eu tenho um pé de hortelã aqui em casa mais não sei oque posso fazer com ela [...]</p>
+                        <p class="lead">Pergunta por: <?= $pergunta['user']->getLoginUso() ?></p>
+                        <h1 class="display-3"><?= $pergunta['pergunta'] ?></h1>
+                        <p class="lead"><?= $pergunta['detalhamento_per'] ?></p>
                         <div class="row">
                             <div class="col-sm-8">
                                         <h4>
-                                            Resposta <i class="fa fa-check" aria-hidden="true"></i> Por: Dr. Yousuke Koiwai
+                                            Resposta <i class="fa fa-check" aria-hidden="true"></i> Por: <?= $resposta['user']->getLoginUso() ?>
                                         </h4>
-                                        <p>Melhorar a digestão e diminuir enjoos são alguns dos benefícios do chá de hortelã, que pode ser preparado usando duas espécies diferentes de hortelã, uma conhecida como hortelã comum ou Menta spicata e outra conhecida como hortelã-pimenta ou Menta piperita..</p>
+                                        <p><?= $resposta['texto_res'] ?></p>
                                         <span class="likebtn-wrapper" data-identifier="item_1"></span>
-                                        <script>(function(d,e,s){if(d.getElementById("likebtn_wjs"))return;a=d.createElement(e);m=d.getElementsByTagName(e)[0];a.async=1;a.id="likebtn_wjs";a.src=s;m.parentNode.insertBefore(a, m)})(document,"script","//w.likebtn.com/js/w/widget.js");</script>
                                         <!-- LikeBtn.com END -->
                             </div>
                             <div class="col-sm-4">
-                                <img src="../../assets/img/MENTHA-SPICATA1.jpg" style= "max-width: 20rem; max-height: 10rem" >
+                                <img src="<?= $pergunta['foto'] ?>" style= "max-width: 10rem; max-height: 10rem" >
                             </div>
                         </div>
                     </div>

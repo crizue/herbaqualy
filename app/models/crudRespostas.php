@@ -12,16 +12,6 @@ class crudRespostas
         $this->conexao = Conexao::getConexao();
     }
 
-    public function getRespostas($id_pergunta)
-    {
-        $sql = "SELECT * from pergunta as p, resposta as r, usuario as u WHERE p.id_pergunta=r.id_pergunta and p.id_pergunta=$id_pergunta and u.id_user=r.id_user order by data_hora";
-        $resultado = $this->conexao->query($sql);
-
-        $respostas = $resultado->fetchAll(PDO::FETCH_ASSOC);
-        return $respostas;
-    }
-
-
 
     public function insertResposta(resposta $resposta)
     {
@@ -33,9 +23,12 @@ class crudRespostas
 
         $consulta = "INSERT INTO resposta (data_hora, texto_res, id_user, id_pergunta)  
                       VALUES ('{$data_hora}','{$texto_res}','{$id_user}','{$id_pergunta}' )";
+
+        $status = "UPDATE pergunta SET status = 1 WHERE id_pergunta = {$id_pergunta}";
         try {
             $res = $this->conexao->exec($consulta);
-            
+            $res = $this->conexao->exec($status);
+
         } catch (PDOException $erro) {
             return $erro->getMessage();
         }
@@ -84,6 +77,18 @@ class crudRespostas
         $resultado = $this->conexao->query($sql);
 
         $respostas = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        return $respostas;
+    }
+
+    public function getResposta($id_pergunta){
+        $sql = "SELECT * from resposta where id_pergunta = $id_pergunta";
+        $resultado = $this->conexao->query($sql);
+
+        $respostas = $resultado->fetch(PDO::FETCH_ASSOC);
+
+        $user = new CrudUsuarios();
+        $respostas['user'] = $user->getUsuario($respostas['id_user']);
+
         return $respostas;
     }
 
