@@ -10,7 +10,7 @@
                         <p class="lead"><?= $pergunta['detalhamento_per'] ?></p>
                         <div class="row">
                             <div class="col-sm-4">
-                                <img src="../../<?= $pergunta['foto'] ?>" style= "max-width: 10rem; max-height: 10rem" >
+                                <img src="<?= $pergunta['foto'] ?>" style= "max-width: 10rem; max-height: 10rem" >
                             </div>
                         </div>
                     </div>

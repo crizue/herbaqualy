@@ -138,7 +138,6 @@ switch ($acao) {
         break;
 
     case 'resposta':
-        echo '<script>alert('. var_dump($_POST) .');</script>';
         if (isset($_POST['gravar'])){
             $crudresposta = new crudRespostas();
             $resposta = new Resposta(date("Y-m-d H:i:s"), $_POST['text'], $_SESSION['id_user'], $_GET['id']);
@@ -173,6 +172,7 @@ switch ($acao) {
                 $resposta = $resposta->getResposta($_GET['id']);
             } else {
                 $resposta['texto_res'] = 'sem resposta';
+                $resposta['user'] = new Usuario('','', '', '', '');
             }
             include "../viewa/perg.php";
         } else {
