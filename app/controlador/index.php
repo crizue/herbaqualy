@@ -11,6 +11,7 @@ session_start();
 require_once "../models/CrudUsuario.php";
 require_once "../models/CrudPerguntas.php";
 require_once "../models/CrudRespostas.php";
+require_once "../models/CrudComentarios.php";
 include "../viewa/head.php";
 
 if (isset($_GET['acao'])){
@@ -21,7 +22,7 @@ $acao = $_GET['acao'];
     $acao = 'index';
 }
 
-$pgSmenu = ['login', 'cadastrar', 'esqueceuSenha', 'logout', 'perguntar', 'resposta'];
+$pgSmenu = ['login', 'cadastrar', 'esqueceuSenha', 'logout', 'perguntar', 'resposta', 'comentar'];
 
 $verifica = true;
 foreach ($pgSmenu as $pg){
@@ -162,20 +163,36 @@ switch ($acao) {
 
         break;
 
+    case 'comentar':
+        if (isset($_POST['comentario'])) {
+            $crudComentario = new crudComentarios();
+            $comentario = new Comentario(date("Y-m-d H:i:s"), $_POST['texto'], $_SESSION['id_user'], $_GET['id']);
+
+            $crudComentario->insertComentario($comentario);
+        }
+
+        header('Location: index.php?acao=pergunta&id=' . $_GET['id']);
+        break;
+
     case 'pergunta':
         $perguntas = new Crudpergunta();
         $pergunta  = $perguntas->getPergunta($_GET['id']);
 
+
         if (($_SESSION['id_tip_user'] < 3) or $pergunta['status'] == 1){
             if ($pergunta['status'] == 1){
                 $resposta = new crudRespostas();
+                $comentario = new crudComentarios();
+
                 $resposta = $resposta->getResposta($_GET['id']);
+
+                $comentario = $comentario->getComentarios($_GET['id']);
             } else {
                 $resposta['texto_res'] = 'sem resposta';
                 $resposta['user'] = new Usuario('','', '', '', '');
             }
             include "../viewa/perg.php";
-        } else {
+        }else {
             if (isset($_POST['gravar'])){
                 $crudresposta = new crudRespostas();
                 $resposta = new Resposta(date("Y-m-d H:i:s"), $_POST['text'], $_SESSION['id_user'], $_GET['id']);
@@ -183,7 +200,7 @@ switch ($acao) {
 
 
 
-                //header('Location: index.php?acao=index');
+                header('Location: index.php?acao=index');
 
             }else {
                 include "../viewa/resp.php";

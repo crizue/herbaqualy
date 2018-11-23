@@ -13,7 +13,7 @@
                                 <img src="<?= $pergunta['foto'] ?>" style= "max-width: 10rem; max-height: 10rem" >
                             </div>
                         </div>
-                    </div>
+                        </div>
                 </div>
 
                 <div class="card my-4">
@@ -25,7 +25,6 @@
                             </div>
                             <button type="submit" name="gravar" class="btn main-btn pull-right">Responder Pergunta</button>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>

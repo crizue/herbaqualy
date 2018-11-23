@@ -14,11 +14,17 @@ class crudComentarios
 
     public function getComentarios($id)
     {                                                //as para renomear e ajudar para reduzir o tamanho do códico
-    	$sql = "SELECT * from pergunta as p  , comentario as c, usuario as u WHERE p.id_pergunta=c.id_pergunta and p.id_pergunta=$id and u.id_user=c.id_user order by data_hora";
+    	$sql = "SELECT * from pergunta as p  , comentario as c, usuario as u WHERE p.id_pergunta=c.id_pergunta and p.id_pergunta=$id and u.id_user=c.id_user";
         $resultado = $this->conexao->query($sql);
         $listaComentarios = [];
 
         $comentarios = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        $user = new CrudUsuarios();
+        foreach ($comentarios as $key => $value){
+            $comentarios[$key]['usuario'] = $user->getUsuario($value['id_user']);
+        }
+
         return $comentarios;
     }
     
@@ -31,11 +37,8 @@ class crudComentarios
         $id_user = $comentario->getid_user();
         $id_pergunta = $comentario->getId_Pergunta();
 
+        $consulta = "INSERT INTO comentario (data_hora, texto_comen, id_user, id_pergunta) VALUES ('{$data_hora}', '{$texto_comen}', '{$id_user}', '{$id_pergunta}');";
 
-
-        $consulta = "INSERT INTO comentario (data_hora, texto_comen, id_user, id_pergunta)  
-                      VALUES ('{$data_hora}', '{$texto_comen}', '{$id_user}', '{$id_pergunta}')";
-        
         try {
             $res = $this->conexao->exec($consulta);
 

@@ -27,30 +27,24 @@
                 <div class="card my-4">
                     <h5 class="card-header">Deixe um comentario:</h5>
                     <div class="card-body">
-                        <form>
+                        <form role="form" id="contact-form" class="contact-form" method="post" action="index.php?acao=comentar&id=<?= $_GET['id'] ?>">
                             <div class="form-group">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea name="texto" class="form-control" rows="3"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-success">Enviar</button>
+                            <button type="submit" class="btn btn-success" name="comentario">Enviar</button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Single Comment -->
-                <div class="media mb-4">
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0">User 2552314</h5>muito bom, muito bom
+                <?php foreach ($comentario as $coment): ?>
+                    <!-- Single Comment -->
+                    <div class="media mb-4">
+                        <div class="media-body">
+                            <h5 class="mt-0">User <?= $coment['usuario']->getLoginUso() ?></h5><?= $coment['texto_comen'] ?>
+                        </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
 
-                <!-- Comment with nested comments -->
-                <div class="media mb-4">
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                    <div class="media-body">
-                        <h5 class="mt-0">User 1233</h5>acho que ele esta errado
-                    </div>
-                </div>
             </div>
         </div>
     </div>
