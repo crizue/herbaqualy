@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23-Nov-2018 às 01:35
+-- Generation Time: 23-Nov-2018 às 02:48
 -- Versão do servidor: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -21,6 +21,104 @@ SET time_zone = "+00:00";
 --
 -- Database: `herbaqualy`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `id_categoria` int(11) NOT NULL,
+  `descricao_cate` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `categoria`
+--
+
+INSERT INTO `categoria` (`id_categoria`, `descricao_cate`) VALUES
+(1, 'cha'),
+(2, 'fruta\r\n');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `comentario`
+--
+
+CREATE TABLE `comentario` (
+  `id_comentario` int(11) NOT NULL,
+  `data_hora` datetime DEFAULT NULL,
+  `texto_comen` varchar(7000) DEFAULT NULL,
+  `id_pergunta` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `pergunta`
+--
+
+CREATE TABLE `pergunta` (
+  `detalhamento_per` varchar(7000) DEFAULT NULL,
+  `pergunta` varchar(100) DEFAULT NULL,
+  `id_pergunta` int(11) NOT NULL,
+  `data_hora` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id_user` int(11) DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `foto` varchar(60) DEFAULT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `planta`
+--
+
+CREATE TABLE `planta` (
+  `id_planta` int(11) NOT NULL,
+  `titulo` varchar(100) DEFAULT NULL,
+  `descricao_plan` varchar(7000) DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `resposta`
+--
+
+CREATE TABLE `resposta` (
+  `id_resposta` int(11) NOT NULL,
+  `data_hora` datetime DEFAULT NULL,
+  `texto_res` varchar(7000) DEFAULT NULL,
+  `id_pergunta` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tip_user`
+--
+
+CREATE TABLE `tip_user` (
+  `id_tip_user` int(11) NOT NULL,
+  `descricao_tip` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `tip_user`
+--
+
+INSERT INTO `tip_user` (`id_tip_user`, `descricao_tip`) VALUES
+(1, 'admin'),
+(2, 'comum\r\n'),
+(3, 'biologo');
 
 -- --------------------------------------------------------
 
@@ -51,6 +149,50 @@ INSERT INTO `usuario` (`id_user`, `nome`, `login`, `senha`, `email`, `id_tip_use
 --
 
 --
+-- Indexes for table `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id_categoria`);
+
+--
+-- Indexes for table `comentario`
+--
+ALTER TABLE `comentario`
+  ADD PRIMARY KEY (`id_comentario`),
+  ADD KEY `id_pergunta` (`id_pergunta`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `pergunta`
+--
+ALTER TABLE `pergunta`
+  ADD PRIMARY KEY (`id_pergunta`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indexes for table `planta`
+--
+ALTER TABLE `planta`
+  ADD PRIMARY KEY (`id_planta`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indexes for table `resposta`
+--
+ALTER TABLE `resposta`
+  ADD PRIMARY KEY (`id_resposta`),
+  ADD KEY `id_pergunta` (`id_pergunta`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `tip_user`
+--
+ALTER TABLE `tip_user`
+  ADD PRIMARY KEY (`id_tip_user`);
+
+--
 -- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
@@ -62,6 +204,42 @@ ALTER TABLE `usuario`
 --
 
 --
+-- AUTO_INCREMENT for table `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `comentario`
+--
+ALTER TABLE `comentario`
+  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `pergunta`
+--
+ALTER TABLE `pergunta`
+  MODIFY `id_pergunta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+
+--
+-- AUTO_INCREMENT for table `planta`
+--
+ALTER TABLE `planta`
+  MODIFY `id_planta` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `resposta`
+--
+ALTER TABLE `resposta`
+  MODIFY `id_resposta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tip_user`
+--
+ALTER TABLE `tip_user`
+  MODIFY `id_tip_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
@@ -70,6 +248,34 @@ ALTER TABLE `usuario`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Limitadores para a tabela `comentario`
+--
+ALTER TABLE `comentario`
+  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`id_pergunta`) REFERENCES `pergunta` (`id_pergunta`),
+  ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`);
+
+--
+-- Limitadores para a tabela `pergunta`
+--
+ALTER TABLE `pergunta`
+  ADD CONSTRAINT `pergunta_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`),
+  ADD CONSTRAINT `pergunta_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`);
+
+--
+-- Limitadores para a tabela `planta`
+--
+ALTER TABLE `planta`
+  ADD CONSTRAINT `planta_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`),
+  ADD CONSTRAINT `planta_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`);
+
+--
+-- Limitadores para a tabela `resposta`
+--
+ALTER TABLE `resposta`
+  ADD CONSTRAINT `resposta_ibfk_1` FOREIGN KEY (`id_pergunta`) REFERENCES `pergunta` (`id_pergunta`),
+  ADD CONSTRAINT `resposta_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`);
 
 --
 -- Limitadores para a tabela `usuario`
