@@ -14,10 +14,39 @@
                         <span class="nav-link-text">Inicio</span>
                     </a>
                 </li>
+                <?php if (isset($_SESSION['id_user'])): ?>
+                    <?php if ($_SESSION['id_tip_user'] == 1): ?>
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
+                        <a class="nav-link" href="index.php?acao=admin">
+                            <i class="fa fa-bars"></i>
+                            <span class="nav-link-text">Admin</span>
+                        </a>
+                    </li>
+                    <?php elseif ($_SESSION['id_tip_user'] == 3): ?>
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
+                            <a class="nav-link" href="index.php?acao=artigo">
+                                <i class="fa fa-bars"></i>
+                                <span class="nav-link-text">Criar Artigo</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
+                            <a class="nav-link" href="index.php?acao=resposta">
+                                <i class="fa fa-bars"></i>
+                                <span class="nav-link-text">Responder Perguntas</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
+                    <a class="nav-link" href="index.php?acao=perguntas">
+                        <i class="fa fa-bars"></i>
+                        <span class="nav-link-text">Perguntas</span>
+                    </a>
+                </li>
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Biblioteca">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
                         <i class="fa fa-university"></i>
-                        <span class="nav-link-text">Biblioteca</span>
+                        <span class="nav-link-text">Artigos</span>
                     </a>
                 </li>
                 <ul class="sidenav-second-level collapse" id="collapseMulti">
@@ -66,10 +95,12 @@
                 </li>
 
                 <li class="nav-item">
-                    <?php if ($_SESSION['id_tip_user'] < 3): ?>
-                        <a class="nav-link" href="index.php?acao=perguntar">Criar pergunta</a>
-                    <?php else: ?>
-                        <a class="nav-link" href="index.php?acao=resposta">Responder pergunta</a>
+                    <?php if (isset($_SESSION['id_user'])): ?>
+                        <?php if ($_SESSION['id_tip_user'] < 3): ?>
+                            <a class="nav-link" href="index.php?acao=perguntar">Criar pergunta</a>
+                        <?php else: ?>
+                            <a class="nav-link" href="index.php?acao=resposta">Responder pergunta</a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </li>
                 <li class="nav-item">

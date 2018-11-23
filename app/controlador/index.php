@@ -16,9 +16,7 @@ include "../viewa/head.php";
 
 if (isset($_GET['acao'])){
 $acao = $_GET['acao'];
-} elseif (!isset($_SESSION['login'])){
-    $acao = 'login';
-}else{
+} else{
     $acao = 'index';
 }
 
@@ -38,6 +36,10 @@ if ($verifica){
 switch ($acao) {
 
     case 'index':
+        echo 'aasdasdadsasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadfadfA';
+        break;
+
+    case 'perguntas':
 
         if (isset($_GET['iduser'])){
             @session_start();
@@ -48,7 +50,7 @@ switch ($acao) {
         $perguntas = new Crudpergunta();
         $array = $perguntas->getPerguntas();
 
-        include "../viewa/index.php";
+        include "../viewa/perguntas.php";
 
         break;
 
@@ -155,7 +157,7 @@ switch ($acao) {
             $array = $perguntas->perguntanAORespondidas();
 
 
-            include "../viewa/index.php";
+            include "../viewa/perguntas.php";
         }
 
 

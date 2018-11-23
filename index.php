@@ -1,5 +1,5 @@
 <?php
 
-    header("Location: app/controlador/index.php");
+    header("Location: app/controlador/perguntas.php");
 
     ?>
