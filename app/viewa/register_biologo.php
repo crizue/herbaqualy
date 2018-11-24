@@ -21,7 +21,7 @@
     <div class="card card-register mx-auto mt-5">
         <div class="card-header">Registrar Biologo</div>
         <div class="card-body">
-            <form action="../controlador/index.php?acao=cadastrar&tipo=biologo" method="post">
+            <form action="../controlador/index.php?acao=cadastrar&tipo=5" method="post">
                 <div class="form-group">
                     <div class="form-row">
                         <div class="form-group">

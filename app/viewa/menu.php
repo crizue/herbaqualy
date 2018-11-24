@@ -24,7 +24,7 @@
                     </li>
                     <?php elseif ($_SESSION['id_tip_user'] == 3): ?>
                         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
-                            <a class="nav-link" href="index.php?acao=artigo">
+                            <a class="nav-link" href="index.php?acao=criar_artigo">
                                 <i class="fa fa-bars"></i>
                                 <span class="nav-link-text">Criar Artigo</span>
                             </a>

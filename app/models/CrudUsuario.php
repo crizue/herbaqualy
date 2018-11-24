@@ -26,11 +26,25 @@ class CrudUsuarios
 
         $usuarios = $resultado->fetchAll(PDO::FETCH_ASSOC);
         foreach ($usuarios as $usuario){
-            $objeto = new Usuario($usuario['nome'], $usuario['email'], $usuario['login'],$usuario['senha']);
+            $objeto = new Usuario($usuario['nome'], $usuario['email'], $usuario['login'],$usuario['senha'], $usuario['id_tip_user'], $usuario['id_user']);
             $listaUsuarios[] = $objeto;
         }
         return $listaUsuarios;
         }
+
+    public function getUsuarios_tipo($tipo){
+
+        $sql = "select * from usuario WHERE id_tip_user = $tipo order by nome";
+        $resultado = $this->conexao->query($sql);
+        $listaUsuarios = [];
+
+        $usuarios = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($usuarios as $usuario){
+            $objeto = new Usuario($usuario['nome'], $usuario['email'], $usuario['login'],$usuario['senha'], $usuario['id_tip_user'], $usuario['id_user']);
+            $listaUsuarios[] = $objeto;
+        }
+        return $listaUsuarios;
+    }
 
     public function insertUsuario(Usuario $usuario){
 
@@ -67,7 +81,8 @@ class CrudUsuarios
 
     public function updateUsuario(Usuario $usuario){
 
-    $consulta = "UPDATE usuario SET nome = '{$usuario->getNome()}', email = '{$usuario->getEmail()}', login = '{$usuario->getLoginUso()}', senha = '{$usuario->getSenhaUso()}' WHERE id_user={$usuario->getid_user()}";
+    $consulta = "UPDATE usuario SET nome = '{$usuario->getNome()}', email = '{$usuario->getEmail()}', login = '{$usuario->getLoginUso()}', senha = '{$usuario->getSenhaUso()}', id_tip_user = '{$usuario->getTipo()}' WHERE id_user={$usuario->getid_user()}";
+
     try{
     $res = $this->conexao->exec($consulta);
     //return $res;
@@ -79,7 +94,6 @@ class CrudUsuarios
     public function deleteUsuario($id_user){
 
     $consulta = "DELETE FROM usuario WHERE id_user = {$id_user}";
-    echo $consulta;
     try{
     $res = $this->conexao->exec($consulta);
     //return $res;

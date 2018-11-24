@@ -39,6 +39,129 @@ switch ($acao) {
         echo 'aasdasdadsasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadfadfA';
         break;
 
+    case 'admin':
+        $user = new CrudUsuarios();
+        $pergunta = new Crudpergunta();
+        $artigos = 1;
+
+        $total_user      = count($user->getUsuarios());
+        $total_userbio   = count($user->getUsuarios_tipo(3));
+        $total_usercomum = count($user->getUsuarios_tipo(2));
+        $total_useraprov = count($user->getUsuarios_tipo(5));
+
+        $total_pergunta = count($pergunta->getPerguntas());
+        $total_perguntaresp = count($pergunta->perguntaRespondidas());
+        $total_perguntasresp = count($pergunta->perguntaNaoRespondidas());
+
+        include "../viewa/admin.php";
+        if (isset($_GET['par'])){
+            switch ($_GET['par']){
+                case 'users':
+                    $list = $user->getUsuarios();
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l->getNome();
+                        $array[$key]['sub'] = $l->getLoginUso();
+                        $array[$key]['text'] = 'e-mail: ' . $l->getEmail() . '<br>Tipo: ' . $l->getTipo();
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluiruser&id=' . $l->getid_user();
+                        if ($l->getTipo() == 5){
+                            $array[$key]['link_aprovar'] = 'index.php?acao=admin&par=aprovaruser&id=' . $l->getid_user();
+                        }
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+                case 'bio':
+                    $list = $user->getUsuarios_tipo(3);
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l->getNome();
+                        $array[$key]['sub'] = $l->getLoginUso();
+                        $array[$key]['text'] = 'e-mail: ' . $l->getEmail() . '<br>Tipo: ' . $l->getTipo();
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluiruser&id=' . $l->getid_user();
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+                case 'comum':
+                    $list = $user->getUsuarios_tipo(2);
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l->getNome();
+                        $array[$key]['sub'] = $l->getLoginUso();
+                        $array[$key]['text'] = 'e-mail: ' . $l->getEmail() . '<br>Tipo: ' . $l->getTipo();
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluiruser&id=' . $l->getid_user();
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+                case 'aprov':
+                    $list = $user->getUsuarios_tipo(5);
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l->getNome();
+                        $array[$key]['sub'] = $l->getLoginUso();
+                        $array[$key]['text'] = 'e-mail: ' . $l->getEmail() . '<br>Tipo: ' . $l->getTipo();
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluiruser&id=' . $l->getid_user();
+                        $array[$key]['link_aprovar'] = 'index.php?acao=admin&par=aprovaruser&id=' . $l->getid_user();
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+
+                case 'perg':
+                    $list = $pergunta->getPerguntas();
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l['pergunta'];
+                        $array[$key]['sub'] = $l['user']->getLoginUso();
+                        $array[$key]['text'] = $l['detalhamento_per'];
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluirperg&id=' . $l['id_pergunta'];
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+                case 'resp':
+                    $list = $pergunta->perguntaRespondidas();
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l['pergunta'];
+                        $array[$key]['sub'] = $l['user']->getLoginUso();
+                        $array[$key]['text'] = $l['detalhamento_per'];
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluirperg&id=' . $l['id_pergunta'];
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+                case 'pergsresp':
+                    $list = $pergunta->perguntaNaoRespondidas();
+                    $array = [];
+                    foreach ($list as $key => $l ){
+                        $array[$key]['titulo'] = $l['pergunta'];
+                        $array[$key]['sub'] = $l['user']->getLoginUso();
+                        $array[$key]['text'] = $l['detalhamento_per'];
+                        $array[$key]['link_excluir'] = 'index.php?acao=admin&par=excluirperg&id=' . $l['id_pergunta'];
+                    }
+                    include "../viewa/admin_control.php";
+                    break;
+
+                case 'excluiruser':
+                    $user->deleteUsuario($_GET['id']);
+                    echo "<script>location.href='index.php?acao=admin';</script>";
+                    break;
+                case 'excluirperg':
+                    $pergunta->deletePergunta($_GET['id']);
+                    echo "<script>location.href='index.php?acao=admin';</script>";
+                    break;
+                case 'aprovaruser':
+                    $usuario = $user->getUsuario($_GET['id']);
+                    $usuario->setTipo(3);
+                    $user->updateUsuario($usuario);
+                    echo "<script>location.href='index.php?acao=admin';</script>";
+                    break;
+            }
+
+        }
+        break;
+
+    case 'criar_artigo':
+        include '../viewa/cria_artigo.php';
+        break;
+
     case 'perguntas':
 
         if (isset($_GET['iduser'])){
